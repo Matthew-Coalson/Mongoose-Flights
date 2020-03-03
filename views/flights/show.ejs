@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+
+<h1><%= title %></h1>
+<table>
+  <thead>
+    <tr>
+      <th>Airport</th>
+      <th>Airline</th>
+      <th>Flight Number</th>
+      <th>Departs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td><%= flight.airport %></td>
+        <td><%= flight.airline %></td>
+        <td><%= flight.flightNo %></td>
+        <td><%= flight.departs.toLocaleString() %></td>
+    </tr>
+</tbody>
+</table>
+<form id="create-form" action="/flights/<%= flight._id %>/destinations" method="POST">
+    <label for="airport">Airport:</label>
+    <select name="airport" id="airport">
+        <option value="DEN" <%- flight.destinations.some(e => e.airport === 'DEN') ? 'Disabled' : '' %>>DEN</option>
+        <option value="AUS" <%- flight.destinations.some(e => e.airport === 'AUS') ? 'Disabled' : '' %>>AUS</option>
+        <option value="DFW" <%- flight.destinations.some(e => e.airport === 'DFW') ? 'Disabled' : '' %>>DFW</option>
+        <option value="LAX" <%- flight.destinations.some(e => e.airport === 'LAX') ? 'Disabled' : '' %>>LAX</option>
+        <option value="SAN" <%- flight.destinations.some(e => e.airport === 'SAN') ? 'Disabled' : '' %>>SAN</option>
+    </select>
+    <label for="arrival">Arrival:</label>
+    <input type="datetime-local" id="arrival" name="arrival">
+    <input type="submit" value="Add Destination">
+</form>
+<table>
+    <thead>
+        <tr>
+        <th>Airport</th>
+        <th>Arrival</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% flight.destinations.forEach(function(d) { %>
+        <tr>
+            <td><%= d.airport %></td>
+            <td><%= d.arrival.toLocaleString() %></td>
+        </tr>
+        <% }); %> 
+    </tbody>
+</table>
+<a href="/flights/<%= flight._id %>/tickets/new">Add Ticket</a>
+<table>
+    <thead>
+        <tr>
+            <th>Seat</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% tickets.forEach(function(t) { %>
+            <tr>
+                <td><%= t.seat %></td>
+                <td>$<%= t.price %></td>
+            </tr>
+            <% }); %> 
+        </table>
+    </tbody>
+
+<%- include('../partials/footer') %>
